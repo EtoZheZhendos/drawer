@@ -10,18 +10,12 @@
           aria-label="Menu"
           @click="toggleMenu"
         />
-
         <q-btn flat round icon="arrow_left" @click="goToIndexPage" />
-
         <q-btn flat round icon="arrow_right" @click="goToTestPage" />
-
-        <q-toolbar-title> Quasar App </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <q-toolbar-title> Квазар.Статистика </q-toolbar-title>
       </q-toolbar>
     </q-header>
-
-    <q-page-container style="padding-left: 57px">
+    <q-page-container :style="{ paddingLeft: isMobile ? '0px' : '57px' }">
       <app-dashboard
         v-model:show-menu="showMenu"
         v-model:full-width-menu="fullWidthMenu"
@@ -32,60 +26,55 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from "vue";
 import { useQuasar } from "quasar";
-import { useRouter } from "vue-router";
 import AppDashboard from "src/components/AppDashboard.vue";
 
-export default defineComponent({
+export default {
   name: "MainLayout",
   components: {
     AppDashboard,
   },
-  setup() {
-    const quasar = useQuasar();
-    const router = useRouter();
-
-    const showMenu = ref(true);
-    const fullWidthMenu = ref(false);
-    const isMobile = computed(() => quasar.screen.lt.md);
-
-    if (isMobile.value) {
-      showMenu.value = false;
-      fullWidthMenu.value = true;
-    }
-
-    const toggleMenu = () => {
-      fullWidthMenu.value = !fullWidthMenu.value;
-    };
-
-    const goToIndexPage = () => {
-      router.push({ name: "IndexPage" });
-    };
-
-    const goToTestPage = () => {
-      router.push({ name: "TestPage" });
-    };
-
+  data() {
     return {
-      showMenu,
-      fullWidthMenu,
-      toggleMenu,
-      goToIndexPage,
-      goToTestPage,
+      showMenu: true,
+      fullWidthMenu: false,
     };
   },
-});
+  computed: {
+    isMobile() {
+      return this.$q.screen.lt.md;
+    },
+  },
+  watch: {
+    isMobile(newVal) {
+      if (newVal) {
+        this.showMenu = false;
+        this.fullWidthMenu = true;
+      }
+    },
+  },
+  methods: {
+    toggleMenu() {
+      this.fullWidthMenu = !this.fullWidthMenu;
+    },
+    goToIndexPage() {
+      this.$router.push({ name: "IndexPage" });
+    },
+    goToTestPage() {
+      this.$router.push({ name: "TestPage" });
+    },
+  },
+};
 </script>
 
 <style scoped>
 .q-header {
-  background-color: #59594a; /* Темный цвет для фона */
-  color: #ffffff; /* Светлый цвет для текста */
+  background-color: #59594a;
+  color: #ffffff;
 }
 .q-toolbar__title {
   font-size: 15px;
   font-weight: bold;
-  color: #ffffff; /* Цвет заголовка */
+  color: #ffffff;
 }
 </style>

@@ -5,8 +5,9 @@
 <script>
 import { defineComponent } from "vue";
 
-export default defineComponent({
+export default {
   name: "IndexPage",
+  methods: {},
   components: {},
-});
+};
 </script>

@@ -28,9 +28,7 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-
-export default defineComponent({
+export default {
   name: "MainCard",
   props: {
     item: {
@@ -38,59 +36,44 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {
-    const goTo = (item) => {
+  methods: {
+    goTo(item) {
       if (item.link) {
         window.location.href = item.link;
       }
-    };
-
-    return {
-      goTo,
-    };
+    },
   },
-});
+};
 </script>
 
 <style scoped>
 /* Карточка */
 .q-card {
-  background-color: #ffffff; /* Белый фон */
-  border: 1px solid #a3bfa8; /* Граница светло-зеленого цвета */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тени */
+  background-color: #ffffff;
+  border: 1px solid #a3bfa8;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
 }
-
 .q-card:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Увеличенные тени при наведении */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
-
-/* Изображение */
 .q-img {
-  border-bottom: 1px solid #a3bfa8; /* Граница под изображением */
+  border-bottom: 1px solid #a3bfa8;
 }
-
-/* Заголовок */
 .q-toolbar-title {
-  color: #59594a; /* Темный цвет для заголовка */
+  color: #59594a;
   font-size: 18px;
   font-weight: bold;
 }
-
-/* Иконка */
 .q-icon {
-  color: #a3bfa8; /* Светло-зеленый цвет для иконки */
+  color: #a3bfa8;
 }
-
-/* Текст */
 .text-body2 {
-  color: #59594a; /* Темный цвет для текста */
+  color: #59594a;
   font-size: 14px;
 }
-
-/* Разделитель */
 .q-separator {
-  background-color: #a3bfa8; /* Светло-зеленый цвет для разделителя */
+  background-color: #a3bfa8;
 }
 </style>

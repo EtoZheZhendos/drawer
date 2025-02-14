@@ -1,5 +1,6 @@
 <template>
   <q-page class="q-pa-md">
+    <!-- Ряд с карточками -->
     <div class="row q-col-gutter-md">
       <!-- Карточка 1 -->
       <div class="col-12 col-md-6">
@@ -47,7 +48,13 @@
             <div class="text-h6">Список элементов</div>
           </q-card-section>
           <q-list bordered separator>
-            <q-item v-for="item in items" :key="item.id" clickable v-ripple>
+            <q-item
+              v-for="item in items"
+              :key="item.id"
+              clickable
+              v-ripple
+              @click="handleItemClicked(item)"
+            >
               <q-item-section avatar>
                 <q-icon :name="item.icon" />
               </q-item-section>
@@ -61,9 +68,7 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-
-export default defineComponent({
+export default {
   name: "TestPage",
   data() {
     return {
@@ -75,11 +80,17 @@ export default defineComponent({
       ],
     };
   },
-});
+  methods: {
+    handleItemClicked(item) {
+      console.log(`Выбран элемент: ${item.label}`);
+    },
+  },
+};
 </script>
 
 <style scoped>
 .my-card {
   border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 </style>

@@ -8,6 +8,7 @@
     overlay
     persistent
     v-model="localShowMenu"
+    @update:model-value="$emit('update:show-menu', $event)"
   >
     <q-list>
       <q-item
@@ -20,7 +21,6 @@
         <q-item-section avatar>
           <q-icon :name="menuItem.icon" size="20px" />
         </q-item-section>
-
         <q-item-section>
           <q-item-label>{{ menuItem.title }}</q-item-label>
         </q-item-section>
@@ -30,9 +30,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, watch } from "vue";
-
-export default defineComponent({
+export default {
   name: "MainDrawer",
   props: {
     menu: {
@@ -48,71 +46,49 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["update:show-menu", "select-menu-item"],
-  setup(props, { emit }) {
-    const localShowMenu = ref(props.showMenu);
-
-    watch(
-      () => props.showMenu,
-      (newValue) => {
-        localShowMenu.value = newValue;
-      }
-    );
-
-    watch(
-      () => localShowMenu.value,
-      (newValue) => {
-        emit("update:show-menu", newValue);
-      }
-    );
-
-    watch(
-      () => localShowMenu.value,
-      (newValue) => {
-        emit("update:show-menu", newValue);
-      }
-    );
-
-    const selectMenuItem = (id) => {
-      if (props.fullWidthMenu || (!props.fullWidthMenu && id !== undefined)) {
-        emit("select-menu-item", id);
-      }
-    };
-
+  emits: ["update:show-menu"],
+  data() {
     return {
-      localShowMenu,
-      selectMenuItem,
+      localShowMenu: this.showMenu,
     };
   },
-});
+  watch: {
+    showMenu(newVal) {
+      this.localShowMenu = newVal;
+    },
+    localShowMenu(newVal) {
+      this.$emit("update:show-menu", newVal);
+    },
+  },
+  methods: {
+    selectMenuItem(id) {
+      if (this.fullWidthMenu || (!this.fullWidthMenu && id !== undefined)) {
+        this.$emit("select-menu-item", id);
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
-/* Стили для обычного режима */
 .q-item {
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
-
 .q-item:hover {
-  background-color: #f5f5f5; /* Светло-серый фон при наведении */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень при наведении */
+  background-color: #f5f5f5;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
-/* Стили для мини-режима */
 .q-item.mini-mode {
-  padding-left: 8px; /* Уменьшаем отступ слева */
+  padding-left: 8px;
 }
-
 .q-item.mini-mode .q-item__section--avatar {
-  margin-right: 0; /* Убираем отступ справа от иконки */
+  margin-right: 0;
 }
-
 .q-item.mini-mode .q-item__section--main {
-  display: none; /* Скрываем текст в мини-режиме */
+  display: none;
 }
-
 .q-item.mini-mode:hover {
-  background-color: #f5f5f5; /* Светло-серый фон при наведении на иконку */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень при наведении на иконку */
+  background-color: #f5f5f5;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 </style>
