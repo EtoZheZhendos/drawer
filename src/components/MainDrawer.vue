@@ -15,10 +15,12 @@
         :key="index"
         clickable
         @click="selectMenuItem(menuItem.id)"
+        :class="{ 'mini-mode': !fullWidthMenu }"
       >
         <q-item-section avatar>
           <q-icon :name="menuItem.icon" size="20px" />
         </q-item-section>
+
         <q-item-section>
           <q-item-label>{{ menuItem.title }}</q-item-label>
         </q-item-section>
@@ -46,12 +48,35 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["update:showMenu", "select-menu-item"],
+  emits: ["update:show-menu", "select-menu-item"],
   setup(props, { emit }) {
-    const localShowMenu = ref(true);
+    const localShowMenu = ref(props.showMenu);
+
+    watch(
+      () => props.showMenu,
+      (newValue) => {
+        localShowMenu.value = newValue;
+      }
+    );
+
+    watch(
+      () => localShowMenu.value,
+      (newValue) => {
+        emit("update:show-menu", newValue);
+      }
+    );
+
+    watch(
+      () => localShowMenu.value,
+      (newValue) => {
+        emit("update:show-menu", newValue);
+      }
+    );
 
     const selectMenuItem = (id) => {
-      emit("select-menu-item", id);
+      if (props.fullWidthMenu || (!props.fullWidthMenu && id !== undefined)) {
+        emit("select-menu-item", id);
+      }
     };
 
     return {
@@ -61,22 +86,33 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
-/* Боковое меню */
-.q-drawer {
-  background-color: #59594a; /* Темный цвет для фона */
-}
 
-/* Элементы списка */
+<style scoped>
+/* Стили для обычного режима */
+.q-item {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
 
 .q-item:hover {
-  background-color: #a3bfa8; /* Светло-зеленый цвет при наведении */
-  color: #59594a; /* Темный цвет для текста при наведении */
+  background-color: #f5f5f5; /* Светло-серый фон при наведении */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень при наведении */
 }
 
-/* Заголовок элемента */
-.q-item-label {
-  font-size: 16px;
-  font-weight: 500;
+/* Стили для мини-режима */
+.q-item.mini-mode {
+  padding-left: 8px; /* Уменьшаем отступ слева */
+}
+
+.q-item.mini-mode .q-item__section--avatar {
+  margin-right: 0; /* Убираем отступ справа от иконки */
+}
+
+.q-item.mini-mode .q-item__section--main {
+  display: none; /* Скрываем текст в мини-режиме */
+}
+
+.q-item.mini-mode:hover {
+  background-color: #f5f5f5; /* Светло-серый фон при наведении на иконку */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень при наведении на иконку */
 }
 </style>

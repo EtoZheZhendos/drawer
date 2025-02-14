@@ -10,18 +10,22 @@
           aria-label="Menu"
           @click="toggleMenu"
         />
+
+        <q-btn flat round icon="arrow_left" @click="goToIndexPage" />
+
+        <q-btn flat round icon="arrow_right" @click="goToTestPage" />
+
         <q-toolbar-title> Quasar App </q-toolbar-title>
+
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
-    <main-drawer
-      :menu="menu"
-      :full-width-menu="fullWidthMenu"
-      v-model:show-menu="showMenu"
-      @select-menu-item="selectMenuItem"
-    />
+
     <q-page-container style="padding-left: 57px">
-      <index-page :rows="selectedRows" />
+      <app-dashboard
+        v-model:show-menu="showMenu"
+        v-model:full-width-menu="fullWidthMenu"
+      />
       <router-view />
     </q-page-container>
   </q-layout>
@@ -30,66 +34,55 @@
 <script>
 import { defineComponent, ref, computed } from "vue";
 import { useQuasar } from "quasar";
-import IndexPage from "src/pages/IndexPage.vue";
-import MainDrawer from "src/components/MainDrawer.vue";
-import { menuArr } from "src/static/menu";
+import { useRouter } from "vue-router";
+import AppDashboard from "src/components/AppDashboard.vue";
 
 export default defineComponent({
   name: "MainLayout",
   components: {
-    IndexPage,
-    MainDrawer,
+    AppDashboard,
   },
   setup() {
-    const leftDrawerOpen = ref(false);
-    const selectedGroupId = ref(0);
-    const fullWidthMenu = ref(false);
     const quasar = useQuasar();
+    const router = useRouter();
+
     const showMenu = ref(true);
+    const fullWidthMenu = ref(false);
     const isMobile = computed(() => quasar.screen.lt.md);
+
     if (isMobile.value) {
       showMenu.value = false;
       fullWidthMenu.value = true;
     }
 
-    const selectedRows = computed(() => {
-      const group = menuArr.find((group) => group.id === selectedGroupId.value);
-      return group ? group.rows : [];
-    });
-
     const toggleMenu = () => {
       fullWidthMenu.value = !fullWidthMenu.value;
     };
 
-    const selectMenuItem = (id) => {
-      selectedGroupId.value = id;
+    const goToIndexPage = () => {
+      router.push({ name: "IndexPage" });
     };
 
-    const menu = [
-      { id: 0, title: "Clear", icon: "close" },
-      { id: 1, title: "Тестовый текст", icon: "settings" },
-      { id: 2, title: "Справочники", icon: "key" },
-      { id: 3, title: "Справочники тест", icon: "storage" },
-    ];
+    const goToTestPage = () => {
+      router.push({ name: "TestPage" });
+    };
 
     return {
-      leftDrawerOpen,
-      menu,
-      selectedRows,
-      toggleMenu,
-      fullWidthMenu,
       showMenu,
-      selectMenuItem,
+      fullWidthMenu,
+      toggleMenu,
+      goToIndexPage,
+      goToTestPage,
     };
   },
 });
 </script>
+
 <style scoped>
 .q-header {
   background-color: #59594a; /* Темный цвет для фона */
   color: #ffffff; /* Светлый цвет для текста */
 }
-
 .q-toolbar__title {
   font-size: 15px;
   font-weight: bold;

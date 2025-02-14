@@ -1,17 +1,12 @@
 <template>
-  <div>
-    <app-dashboard />
-  </div>
+  <div></div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import AppDashboard from "src/components/AppDashboard.vue";
 
 export default defineComponent({
   name: "IndexPage",
-  components: {
-    AppDashboard,
-  },
+  components: {},
 });
 </script>
