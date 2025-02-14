@@ -19,6 +19,7 @@
       <app-dashboard
         v-model:show-menu="showMenu"
         v-model:full-width-menu="fullWidthMenu"
+        :initial-selected-group-id="parseInt($route.params.id, 10)"
       />
       <router-view />
     </q-page-container>
