@@ -1,5 +1,9 @@
 export const menuArr = [
   {
+    id: 0,
+    rows: [],
+  },
+  {
     id: 1,
     rows: [
       {

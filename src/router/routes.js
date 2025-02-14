@@ -13,6 +13,11 @@ const routes = [
         name: "TestPage",
         component: () => import("src/pages/TestPage.vue"),
       },
+      {
+        path: "menu/:id",
+        name: "MenuPage",
+        component: () => import("src/pages/MenuPage.vue"),
+      },
     ],
   },
   {

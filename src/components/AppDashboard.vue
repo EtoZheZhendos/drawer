@@ -76,6 +76,8 @@ export default {
       } else {
         this.$router.push({ name: "IndexPage" });
       }
+      this.$router.push({ name: "MenuPage", params: { id } });
+
       if (id !== this.selectedGroupId) this.selectedGroupId = id;
     },
   },
