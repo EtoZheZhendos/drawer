@@ -1,3 +1,4 @@
+<template><div></div></template>
 <script>
 import { menuArr } from "src/static/menu";
 

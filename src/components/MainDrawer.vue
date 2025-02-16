@@ -46,7 +46,8 @@ export default {
       required: true,
     },
   },
-  emits: ["update:show-menu"],
+
+  emits: ["update:show-menu", "select-menu-item"],
   data() {
     return {
       localShowMenu: this.showMenu,
